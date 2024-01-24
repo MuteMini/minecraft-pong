@@ -1,0 +1,7 @@
+# GHDL binaries
+*.o
+*.cf
+*.exe
+
+# GTKwave binaries
+*.ghw

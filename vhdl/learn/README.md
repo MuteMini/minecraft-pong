@@ -4,9 +4,9 @@ All rights to the VHDL files within this directory go to the contributers of the
 
 ## Windows Installation
 
-Go download [Msys2](https://www.msys2.org/), a Windows package manager. Install [mingw32](https://packages.msys2.org/base/mingw-w64-gcc) (if you don't already have it), [GHDL](https://packages.msys2.org/base/mingw-w64-ghdl), and [GTKwave](https://packages.msys2.org/base/mingw-w64-gtkwave) using pacman. By default, on Windows, you should be downloading the `ucrt64` binary types.
+Go download [MSYS2](https://www.msys2.org/), a Windows package manager and follow the installation instructions. Install [mingw32](https://packages.msys2.org/base/mingw-w64-gcc) (if you don't already have it), [GHDL](https://packages.msys2.org/base/mingw-w64-ghdl), and [GTKwave](https://packages.msys2.org/base/mingw-w64-gtkwave) using pacman. To do so, enter the command: `pacman -S <binary_package_name>` into the MSYS2 UCRT64 terminal. By default, on Windows, you should be downloading the `ucrt64` binary types.
 
-Once all packages are downloaded, by default they will not be added to your PATH environment variable. Go find your Msys2 installation directory. Once you do, add the `[MSYS2_PATH]/ucrt64/bin` in your system PATH varible. Now, `gcc, ghdl, gtkwave` commands will all be available from the command terminal.
+Once all packages are downloaded, by default they will not be added to your PATH environment variable. Go find your Msys2 installation directory. Once you do, add the `[MSYS2_PATH]/ucrt64/bin` in your system PATH varible which is accessed through SYSTEM ENVIRONMENT VARIABLES. Now, `gcc, ghdl, gtkwave` commands will all be available from the command terminal.
 
 ## Learning Steps
 

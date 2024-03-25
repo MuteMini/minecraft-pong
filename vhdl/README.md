@@ -20,3 +20,19 @@ Go download [MSYS2](https://www.msys2.org/), a Windows package manager and follo
 
 Once all packages are downloaded, by default they will not be added to your PATH environment variable. Go find your Msys2 installation directory. Once you do, add the `[MSYS2_PATH]/ucrt64/bin` in your system PATH varible which is accessed through SYSTEM ENVIRONMENT VARIABLES. Now, `gcc, ghdl, gtkwave` commands will all be available from the command terminal.
 
+## Important Commands
+
+Run the following commands from the `./vhdl` directory. As per GHDL default, we will be using VHDL-1993 standard.
+
+```
+-- Analyze VHDL code and move binaries into ./work
+ghdl -a --workdir=work [FILE NAMES, supports glob]
+
+-- Elaborate and run binaries in ./work
+ghdl --elab-run --workdir=work [ENTITY NAME]
+
+-- Make sure if you write some optional configurations into analysis, you run the same configuration in the elaboration and run step.
+
+-- Remove all files except executaable in work directory
+ghdl --remove --workdir=work
+```

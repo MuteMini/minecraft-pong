@@ -9,8 +9,8 @@ entity paddle_input is
 end paddle_input;
 
 architecture paddle_behav of paddle_input is
-  	constant up_vel : 	std_logic_vector(4 downto 0) := "11111";
-  	constant down_vel : std_logic_vector(4 downto 0) := "00001";
+  	constant up_vel : 	std_logic_vector(4 downto 0) := "00001";
+  	constant down_vel : std_logic_vector(4 downto 0) := "11111";
 begin
   	process (up, down)
     	variable mux_out_a : std_logic_vector(4 downto 0);

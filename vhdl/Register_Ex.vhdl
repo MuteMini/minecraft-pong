@@ -1,22 +1,33 @@
-entity Register_Ex is
-    -- inputs and outputs of a hardware piece plus their bit size
-    port in ( 
-        reset   in bit
-        clk     in bit
-        i0      in bit 3 downto 0
-        i1      out bit 7 downto 0
-        )
-end Register_ex;
+library ieee;
+use ieee.std_logic_1164.all;
 
-architecture behaviour of Register_ex 
-is
-begin 
-    regi: process is
-        if i0 > 1
-            i1 <= i1 + 1;
-    end process
-    r: process is
-        i1 <= 0;
-    end process
+-- I found this: https://peterfab.com/ref/vhdl/vdlande/index.html
+-- Register Position
+ENTITY Register_Ex IS
+    -- inputs and outputs of a hardware piece plus their bit size
+    PORT ( 
+        clk         : IN STD_LOGIC;
+        write       : IN STD_LOGIC;
+        reset       : IN STD_LOGIC;
+        dataIn      : IN STD_LOGIC_VECTOR( 7 downto 0 );
+        dataOut     : OUT STD_LOGIC_VECTOR(7 downto 0)
+        );
+END Register_ex;
+
+ARCHITECTURE behaviour OF Register_ex IS
+-- Declarative area
+BEGIN 
+-- If clk == 1 && write == 1, then dataout <= datain
+-- If clk == 1 && reset == 1, then dataout <= 0 
+    modify_storage: PROCESS (clk)
+    BEGIN
+        if rising_edge(clk) then
+            if (write = '1') then
+                dataOut <= dataIn;
+            elsif (reset = '1') then
+                dataOut <= "00000000";
+            end if;
+        end if;
+    END PROCESS modify_storage;
     
-end behaviour
+END behaviour;

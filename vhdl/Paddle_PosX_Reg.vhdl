@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 -- I found this: https://peterfab.com/ref/vhdl/vdlande/index.html
 -- Register Position
-ENTITY Register_Ex IS
+ENTITY Paddle_PosX_Reg IS
     -- inputs and outputs of a hardware piece plus their bit size
     PORT ( 
         clk         : IN STD_LOGIC;
@@ -12,9 +12,9 @@ ENTITY Register_Ex IS
         dataIn      : IN STD_LOGIC_VECTOR( 7 downto 0 );
         dataOut     : OUT STD_LOGIC_VECTOR(7 downto 0)
         );
-END Register_Ex;
+END Paddle_PosX_Reg;
 
-ARCHITECTURE behaviour OF Register_Ex IS
+ARCHITECTURE paddlex_reg OF Paddle_PosX_Reg IS
 -- Declarative area
 BEGIN 
 -- If clk == 1 && write == 1, then dataout <= datain
@@ -30,4 +30,4 @@ BEGIN
         end if;
     END PROCESS modify_storage;
     
-END behaviour;
+END paddlex_reg;

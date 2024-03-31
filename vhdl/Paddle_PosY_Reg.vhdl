@@ -22,10 +22,10 @@ BEGIN
 -- If clk == 1 && write == 1, then dataout <= datain
 -- If clk == 1 && reset == 1, then dataout <= 0 
     
-    modify_storage: PROCESS (clk)
+    modify_storage: PROCESS (clk, write, reset)
     variable data   : STD_LOGIC_VECTOR(4 downto 0);
     BEGIN
-    
+
         for i in 0 to 4 loop
             data(i) := dataIn(i) AND clk AND write;
         end loop;

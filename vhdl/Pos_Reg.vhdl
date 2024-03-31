@@ -2,22 +2,21 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 -- I found this: https://peterfab.com/ref/vhdl/vdlande/index.html
--- Register Position
--- 5 bits for 32 pixels
-ENTITY Paddle_PosY_Reg IS
-    -- inputs and outputs of a hardware piece plus their bit size
+-- 5 bit position register for a 32x32 screen.
+-- Used for all objects
+
+ENTITY Pos_Reg IS
     PORT ( 
         clk         : IN STD_LOGIC;
         write       : IN STD_LOGIC;
         reset       : IN STD_LOGIC;
-        dataIn      : IN STD_LOGIC_VECTOR( 4 downto 0 );
+        dataIn      : IN STD_LOGIC_VECTOR(4 downto 0);
         dataOut     : OUT STD_LOGIC_VECTOR(4 downto 0)
         );
-END Paddle_PosY_Reg;
+END Pos_Reg;
 
-ARCHITECTURE behaviour OF Paddle_PosY_Reg IS
--- Declarative area
-    
+ARCHITECTURE behaviour OF Pos_Reg IS
+   
 BEGIN 
 -- If clk == 1 && write == 1, then dataout <= datain
 -- If clk == 1 && reset == 1, then dataout <= 0 

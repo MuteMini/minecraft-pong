@@ -22,7 +22,7 @@ entity screen_state is
     );
 end entity;
 
--- The following architecture relies on a unary AND operator only available beyond VHDL-2008.
+-- The following architecture relies on a unary OR operator only available beyond VHDL-2008.
 architecture screen_state_behav of screen_state is
     signal p1_won : std_logic;
     signal p2_won : std_logic;

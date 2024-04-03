@@ -27,8 +27,8 @@ architecture screen_state_behav of screen_state is
     signal p1_won : std_logic;
     signal p2_won : std_logic;
 begin
-    p1_won <= OR p1_score;
-    p2_won <= OR p2_score;
+    p1_won <= AND p1_score;
+    p2_won <= AND p2_score;
 
     state(0) <= reset OR p1_won;
     state(1) <= reset OR p2_won;

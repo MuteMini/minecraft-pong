@@ -16,7 +16,10 @@ ENTITY Pos_Reg IS
 END Pos_Reg;
 
 ARCHITECTURE behaviour OF Pos_Reg IS
-   
+   signal Q : std_logic_vector(4 downto 0);
+   signal Q_bar: std_logic_vector(4 downto 0);
+   signal nand_gate1: std_logic_vector(4 downto 0);
+   signal nand_gate2: std_logic_vector(4 downto 0);
 BEGIN 
 -- If clk == 1 && write == 1, then dataout <= datain
 -- If clk == 1 && reset == 1, then dataout <= 0 
@@ -25,15 +28,19 @@ BEGIN
     variable data   : STD_LOGIC_VECTOR(4 downto 0);
     BEGIN
 
+        --nand_gate1 <= dataIn nand (clk and write);
+
         for i in 0 to 4 loop
-            data(i) := dataIn(i) AND clk AND write;
+            nand_gate1(i) <= dataIn(i) nand (clk and write);
+            nand_gate2(i) <= (not dataIn(i)) nand (clk and write);
         end loop;
-            
-        for i in 0 to 4 loop
-            data(i) := dataOut(i) AND (NOT reset);
-        end loop;
+
+            for i in 0 to 4 loop
+                Q(i) <= nand_gate1(i) nand Q_bar(i);
+                Q_bar(i) <= nand_gate2(i) nand Q(i);
+            end loop;
         
-        dataOut <= data;
+        dataOut <= Q;
 
     END PROCESS modify_storage;
     

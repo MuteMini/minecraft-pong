@@ -4,8 +4,9 @@ use ieee.std_logic_1164.all;
 -- I found this: https://peterfab.com/ref/vhdl/vdlande/index.html
 -- 5 bit position register for a 32x32 screen.
 -- Used for all objects
+-- A D flip flop uses 2 D-latches to ensure data is written at the rising edge of the clk.
 
-ENTITY Pos_Reg IS
+ENTITY pos_reg IS
     PORT ( 
         clk         : IN STD_LOGIC;
         write       : IN STD_LOGIC;
@@ -13,34 +14,40 @@ ENTITY Pos_Reg IS
         dataIn      : IN STD_LOGIC_VECTOR(4 downto 0);
         dataOut     : OUT STD_LOGIC_VECTOR(4 downto 0)
         );
-END Pos_Reg;
+END pos_reg;
 
-ARCHITECTURE behaviour OF Pos_Reg IS
-   signal Q : std_logic_vector(4 downto 0);
-   signal Q_bar: std_logic_vector(4 downto 0);
-   signal nand_gate1: std_logic_vector(4 downto 0);
-   signal nand_gate2: std_logic_vector(4 downto 0);
+ARCHITECTURE behaviour OF pos_reg IS
+   signal Q1 : std_logic_vector(4 downto 0);
+   signal Q1_bar: std_logic_vector(4 downto 0);
+   signal Q2: std_logic_vector(4 downto 0);
+   signal Q2_bar: std_logic_vector(4 downto 0);
+   signal clk_write: std_logic;
+   signal nclk_write: std_logic;
 BEGIN 
--- If clk == 1 && write == 1, then dataout <= datain
--- If clk == 1 && reset == 1, then dataout <= 0 
-    
+
     modify_storage: PROCESS (clk, write, reset)
     variable data   : STD_LOGIC_VECTOR(4 downto 0);
     BEGIN
 
-        --nand_gate1 <= dataIn nand (clk and write);
+        nclk_write <= (not clk) and write;
+        clk_write <= clk and write;
+
 
         for i in 0 to 4 loop
-            nand_gate1(i) <= dataIn(i) nand (clk and write);
-            nand_gate2(i) <= (not dataIn(i)) nand (clk and write);
+            Q1(i) <= (dataIn(i) nand nclk_write) nand Q1_bar(i);
+            Q1_bar(i) <= ( (not dataIn(i)) nand nclk_write) nand Q1(i);
+        end loop;
+        
+        for i in 0 to 4 loop
+            Q2(i) <= (Q1(i) nand clk_write) nand Q2_bar(i);
+            Q2_bar(i) <= (Q1_bar(i) nand clk_write) nand Q2(i);
+        end loop;
+        
+        for i in 0 to 4 loop
+            Q2(i) <= Q2(i) and (not reset);
         end loop;
 
-            for i in 0 to 4 loop
-                Q(i) <= nand_gate1(i) nand Q_bar(i);
-                Q_bar(i) <= nand_gate2(i) nand Q(i);
-            end loop;
-        
-        dataOut <= Q;
+        dataOut <= Q2;
 
     END PROCESS modify_storage;
     

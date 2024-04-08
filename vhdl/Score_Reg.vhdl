@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 -- 3 bit score register for a max score of 7.
 
-ENTITY Score_Reg IS
+ENTITY score_reg IS
     PORT ( 
         clk             : IN STD_LOGIC;
         write           : IN STD_LOGIC;
@@ -11,9 +11,9 @@ ENTITY Score_Reg IS
         dataIn          : IN STD_LOGIC_VECTOR(2 downto 0);
         dataOut         : OUT STD_LOGIC_VECTOR(2 downto 0)
         );
-END Score_Reg;
+END score_reg;
 
-ARCHITECTURE behaviour OF Score_Reg IS
+ARCHITECTURE behaviour OF score_reg IS
    
 BEGIN 
 -- If clk == 1 && write == 1, then dataout <= datain
@@ -28,7 +28,7 @@ BEGIN
         end loop;
             
         for i in 0 to 2 loop
-            data(i) := dataOut(i) AND (NOT reset);
+            data(i) := dataIn(i) AND (NOT reset);
         end loop;
         
         dataOut <= data;

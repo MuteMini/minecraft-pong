@@ -1,6 +1,5 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use std.textio.all; 
 
 entity paddle_input is
     port ( 	up :  	in std_logic;                      -- User inputs their paddle to go up

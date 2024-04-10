@@ -30,6 +30,8 @@ architecture behaviour of registers_tb is
     signal dataInPos, dataOutPos        : std_logic_vector(4 downto 0);
     signal dataInScore, dataOutScore    : std_logic_vector(2 downto 0);
 
+    signal wr_pulse                     : std_logic;
+
     signal finished                     : std_logic;
 
 begin
@@ -51,6 +53,17 @@ begin
         assert dataOutPos = "00000"
             report "wrong output" severity error;
         finished <= '1';
+        -- find out how to incorporate a clk in ghdl.
+
+        --DataIn    wr_pulse    reset   DataOut (Q)
+        --0         1           0       0
+        --1         1           0       1
+        --0         0           0       X
+        --1         0           0       X
+        --0         1           1       0
+        --1         1           1       0
+        --0         0           1       0
+        --1         0           1       0
 
     end process;
 END behaviour;

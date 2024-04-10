@@ -8,46 +8,32 @@ use ieee.std_logic_1164.all;
 
 ENTITY pos_reg IS
     PORT ( 
-        clk         : IN STD_LOGIC;
-        write       : IN STD_LOGIC;
-        reset       : IN STD_LOGIC;
-        dataIn      : IN STD_LOGIC_VECTOR(4 downto 0);
-        dataOut     : OUT STD_LOGIC_VECTOR(4 downto 0)
+        wr_pulse        : IN STD_LOGIC;
+        reset           : in std_logic;
+        dataIn          : IN STD_LOGIC_VECTOR(4 downto 0);
+        dataOut         : OUT STD_LOGIC_VECTOR(4 downto 0)
         );
 END pos_reg;
 
 ARCHITECTURE behaviour OF pos_reg IS
-   signal Q1 : std_logic_vector(4 downto 0);
-   signal Q1_bar: std_logic_vector(4 downto 0);
-   signal Q2: std_logic_vector(4 downto 0);
-   signal Q2_bar: std_logic_vector(4 downto 0);
-   signal clk_write: std_logic;
-   signal nclk_write: std_logic;
+   signal Q             : std_logic_vector(4 downto 0);
+   signal Q_bar         : std_logic_vector(4 downto 0);
 BEGIN 
 
-    modify_storage: PROCESS (clk, write, reset)
+    modify_storage: PROCESS (wr_pulse, dataIn)
     variable data   : STD_LOGIC_VECTOR(4 downto 0);
     BEGIN
 
-        nclk_write <= (not clk) and write;
-        clk_write <= clk and write;
-
-
         for i in 0 to 4 loop
-            Q1(i) <= (dataIn(i) nand nclk_write) nand Q1_bar(i);
-            Q1_bar(i) <= ( (not dataIn(i)) nand nclk_write) nand Q1(i);
+            Q(i) <= (dataIn(i) nand wr_pulse) nand Q_bar(i);
+            Q_bar(i) <= ( (not dataIn(i)) nand wr_pulse) nand Q(i);
         end loop;
         
         for i in 0 to 4 loop
-            Q2(i) <= (Q1(i) nand clk_write) nand Q2_bar(i);
-            Q2_bar(i) <= (Q1_bar(i) nand clk_write) nand Q2(i);
+            Q(i) <= Q(i) and (not reset);
         end loop;
         
-        for i in 0 to 4 loop
-            Q2(i) <= Q2(i) and (not reset);
-        end loop;
-
-        dataOut <= Q2;
+        dataOut <= Q;
 
     END PROCESS modify_storage;
     

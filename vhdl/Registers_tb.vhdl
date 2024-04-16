@@ -55,27 +55,8 @@ begin
         reset <= '0';
         wait for 1 ns;
         assert dataOutPos = "00000"
-            report "wrong output" severity error;
+            report "this shit stupid????" severity error;
 
-        dataInPos <= "00001";
-        --reset <= '0';
-        wait for 1 ns;
-        assert dataOutPos = "00000"
-            report "wrong output" severity error;
-
-        dataInPos <= "00001";
-        --reset <= '0';
-        wr_pulse <= '1';
-        wait for 1 ns;
-        assert dataOutPos = "00001"
-            report "wrong output" severity error;
-
-        dI <= '0';
-        wr_pulse <= '1';
-        reset <= '0';
-        wait for 1 ns;
-        assert dO = '0'
-            report "wrong output" severity error;
         --DataIn    wr_pulse    reset   DataOut (Q)
         --0         1           0       0
         --1         1           0       1

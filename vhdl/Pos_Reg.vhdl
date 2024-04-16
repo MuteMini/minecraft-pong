@@ -31,5 +31,5 @@ BEGIN
         dataOut <= Q;
 
     END PROCESS modify_storage;
-    
+        
 END behaviour;

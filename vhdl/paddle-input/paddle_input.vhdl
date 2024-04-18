@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+-- Paddle width is 6 pixels wide.
 entity paddle_input is
     port ( 	up :  	in std_logic;                      -- User inputs their paddle to go up
         	down :  in std_logic;                      -- User inputs their paddle to go down

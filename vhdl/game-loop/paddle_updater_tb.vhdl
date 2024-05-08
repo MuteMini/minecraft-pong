@@ -30,10 +30,9 @@ begin
         up <= '0';
         down <= '0';
         old_pos <= "00010";
-
         wait for 1 ns;
         assert new_pos = "00010"
-            report to_string(new_pos) severity error;
+            report "bad default state" severity error;
 
         up <= '1';
         old_pos <= new_pos;
@@ -57,6 +56,20 @@ begin
         wait for 1 ns;
         assert new_pos = "00010"
             report "bad subtraction" severity error;
+
+        up <= '1';
+        down <= '0';
+        old_pos <= "11010";
+        wait for 1 ns;
+        assert new_pos = "11010"
+            report "overflowed during up input" severity error;
+
+        up <= '0';
+        down <= '1';
+        old_pos <= "00000";
+        wait for 1 ns;
+        assert new_pos = "00000"
+            report "overflowed during down input" severity error;
 
         wait;
     end process;

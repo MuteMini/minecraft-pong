@@ -12,7 +12,7 @@ end pos_reg;
 
 architecture pos_reg_behav of pos_reg is
 begin 
-    register_5bit : entity work.generic_register(generic_register_behav)
+    register_5bit : entity work.generic_register
         generic map (data_width => 5)
         port map (clk => clk, reset => reset, data_in => data_in, data_out => data_out);
 end pos_reg_behav;

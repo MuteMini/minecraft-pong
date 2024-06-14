@@ -19,44 +19,50 @@ begin
 
     process
     begin
-        clk <= '0';
+        clk <= '1';
         reset <= '1';
         wait for 1 ns;
-        assert pos_data_out = "00000" or score_data_out = "000";
+        assert pos_data_out = "00000" or score_data_out = "000"
             report "bad reset value" severity error;
 
+        clk <= '0';
+        reset <= '0';
         pos_data_in <= (others => '1');
         score_data_in <= (others => '1');
         wait for 1 ns;
 
-        assert pos_data_out = "00000" or score_data_out = "000";
+        assert pos_data_out = "00000" or score_data_out = "000"
             report "stored value on low clk" severity error;
 
         clk <= '1';
         wait for 1 ns;
-        assert pos_data_out = "11111" or score_data_out = "111";
+        assert pos_data_out = "11111" or score_data_out = "111"
             report "did not store value on rising edge" severity error;
 
         pos_data_in <= (1 => '1', others => '0');
         score_data_in <= (1 => '1', others => '0');
 
         wait for 1 ns;
-        assert pos_data_out = "11111" or score_data_out = "111";
+        assert pos_data_out = "11111" or score_data_out = "111"
             report "stored value on high clk" severity error;
 
         clk <= '0';
         wait for 1 ns;
-        assert pos_data_out = "11111" or score_data_out = "111";
-            report "did not store value on falling edge clk" severity error;
+        assert pos_data_out = "11111" or score_data_out = "111"
+            report "stored value on falling edge clk" severity error;
 
         clk <= '1';
         wait for 1 ns;
-            assert pos_data_out = "00010" or score_data_out = "010";
+            assert pos_data_out = "00010" or score_data_out = "010"
             report "did not store value on rising edge" severity error;
 
+        clk <= '0';
+        wait for 1 ns;
+        
+        clk <= '1';
         reset <= '1';
         wait for 1 ns;
-        assert pos_data_out = "00000" or score_data_out = "000";
+        assert pos_data_out = "00000" or score_data_out = "000"
             report "bad reset value" severity error;
 
         wait;

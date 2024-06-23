@@ -1,5 +1,5 @@
 [libraries]
 
 pong.files = [
-    'vhdl/[!learn]*/*.vhdl',
+    'vhdl/*/*.vhdl',
 ]

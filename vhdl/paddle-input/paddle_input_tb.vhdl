@@ -41,7 +41,6 @@ begin
         wait for 1 ns;
         assert vel = "11111"
             report "bad down value" severity error;
-        
         wait;
     end process;
 end behav;

@@ -6,20 +6,12 @@ entity paddle_updater_tb is
 end paddle_updater_tb;
 
 architecture behav of paddle_updater_tb is
-    component paddle_updater is
-        port(
-            up, down : in std_logic;
-            old_pos : in std_logic_vector(4 downto 0);
-            new_pos : out std_logic_vector(4 downto 0)
-        );
-    end component;
     
-    for paddle_updater_0 : paddle_updater use entity work.paddle_updater;
-
     signal up, down : std_logic;
     signal old_pos, new_pos : std_logic_vector(4 downto 0);
+
 begin
-    paddle_updater_0 : paddle_updater
+    paddle_updater_0 : entity work.paddle_updater
         port map (  up=>up, 
                     down=>down,
                     old_pos=>old_pos,

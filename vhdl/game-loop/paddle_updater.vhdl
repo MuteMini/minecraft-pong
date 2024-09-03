@@ -14,35 +14,16 @@ entity paddle_updater is
 end paddle_updater;
 
 architecture paddle_updater_behav of paddle_updater is
-    component cancel_carry_adder is
-        generic (
-            adder_width : integer := 1
-        );
-        port (
-            a : in std_logic_vector(adder_width - 1 downto 0);
-            b : in std_logic_vector(adder_width - 1 downto 0);
-            output : out std_logic_vector(adder_width - 1 downto 0)
-        );
-    end component;
-
-    component paddle_input is
-        port ( 	up :  	in std_logic;
-                down :  in std_logic;
-                vel :   out std_logic_vector(4 downto 0));
-    end component;
-
-    for paddle_input_0 : paddle_input use entity work.paddle_input;
-    for cca_5bit : cancel_carry_adder use entity work.cancel_carry_adder;
 
     signal vel, added : std_logic_vector(4 downto 0);
 
 begin
-    paddle_input_0 : paddle_input
+    paddle_input_0 : entity work.paddle_input
         port map ( 	up=>up,
                     down=>down,
                     vel=>vel    );
 
-    cca_5bit : cancel_carry_adder
+    cca_5bit : entity work.cancel_carry_adder
         generic map (adder_width=>5)
         port map (  a=>vel,
                     b=>old_pos,

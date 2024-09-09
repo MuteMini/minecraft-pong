@@ -16,8 +16,8 @@ begin
         port map (
             ball_y => b_y,
             p_pos => p_pos,
-            cur_y_vel => y_vel, new_y_vel => n_y_vel,
-            cur_x_vel => x_vel, new_x_vel => n_x_vel
+            c_x_vel => x_vel, n_x_vel => n_x_vel,
+            c_y_vel => y_vel, n_y_vel => n_y_vel
         );
 
     process

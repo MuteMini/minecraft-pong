@@ -7,10 +7,10 @@ entity paddle_collider is
     port (
         ball_y : in std_logic_vector(4 downto 0);
         p_pos : in std_logic_vector(4 downto 0);
-        cur_y_vel : in std_logic_vector(2 downto 0);
-        new_y_vel : out std_logic_vector(2 downto 0);
-        cur_x_vel : in std_logic;
-        new_x_vel : out std_logic
+        c_x_vel : in std_logic;
+        n_x_vel : out std_logic;
+        c_y_vel : in std_logic_vector(2 downto 0);
+        n_y_vel : out std_logic_vector(2 downto 0)
     );
 end paddle_collider;
 
@@ -31,16 +31,16 @@ begin
     process (all)
         variable touched : boolean := false;
     begin
-        if    ball_y = p_range(0) then new_y_vel <= "101"; touched := true; -- -3 in twos complement
-        elsif ball_y = p_range(1) then new_y_vel <= "110"; touched := true; -- -2 in twos complement
-        elsif ball_y = p_range(2) then new_y_vel <= "111"; touched := true; -- -1 in twos complement
-        elsif ball_y = p_range(3) then new_y_vel <= "001"; touched := true; -- +1 in twos complement
-        elsif ball_y = p_range(4) then new_y_vel <= "010"; touched := true; -- +2 in twos complement
-        elsif ball_y = p_range(5) then new_y_vel <= "011"; touched := true; -- +3 in twos complement
-        else                       new_y_vel <= cur_y_vel; touched := false;
+        if    ball_y = p_range(0) then n_y_vel <= "101"; touched := true; -- -3 in twos complement
+        elsif ball_y = p_range(1) then n_y_vel <= "110"; touched := true; -- -2 in twos complement
+        elsif ball_y = p_range(2) then n_y_vel <= "111"; touched := true; -- -1 in twos complement
+        elsif ball_y = p_range(3) then n_y_vel <= "001"; touched := true; -- +1 in twos complement
+        elsif ball_y = p_range(4) then n_y_vel <= "010"; touched := true; -- +2 in twos complement
+        elsif ball_y = p_range(5) then n_y_vel <= "011"; touched := true; -- +3 in twos complement
+        else                       n_y_vel <= c_y_vel; touched := false;
         end if;
 
-        new_x_vel <= NOT cur_x_vel when touched else cur_x_vel;
+        n_x_vel <= NOT c_x_vel when touched else c_x_vel;
     end process;
 
 end paddle_collider_behav;

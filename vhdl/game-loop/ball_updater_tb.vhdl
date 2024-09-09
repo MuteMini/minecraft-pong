@@ -7,26 +7,25 @@ end ball_updater_tb;
 
 architecture behav of ball_updater_tb is
     
-    signal bp_x, bp_y : std_logic_vector(4 downto 0);
-    signal p1_pos, p2_pos : std_logic_vector(4 downto 0);
-    signal c_y_vel, n_y_vel : std_logic_vector(2 downto 0);
+    signal p1_pos, p2_pos, b_x, b_y : std_logic_vector(4 downto 0);
     signal c_x_vel, n_x_vel : std_logic;
+    signal c_y_vel, n_y_vel : std_logic_vector(2 downto 0);
 
 begin
     ball_updater_0: entity work.ball_updater
-     port map(
-        ball_x => bp_x, ball_y => bp_y,
+    port map(
         p1_pos => p1_pos, p2_pos => p2_pos,
-        cur_y_vel => c_y_vel, new_y_vel => n_y_vel,
-        cur_x_vel => c_x_vel, new_x_vel => n_x_vel
+        b_x => b_x, b_y => b_y,
+        c_x_vel => c_x_vel, c_y_vel => c_y_vel,
+        n_x_vel => n_x_vel, n_y_vel => n_y_vel
     );
 
     process
     begin
-        bp_x <= "01001";
-        bp_y <= "01001";
         p1_pos <= "00000";
         p2_pos <= "00000";
+        b_x <= "01001";
+        b_y <= "01001";
         c_y_vel <= "000";
         c_x_vel <= '0';
 
@@ -40,7 +39,7 @@ begin
             report "new velocity did not stay the same" severity error;
 
         -- Testing ball bounce from walls
-        bp_y <= "11111";
+        b_y <= "11111";
         c_y_vel <= "001";
         wait for 1 ns;
         assert n_y_vel = "111" AND n_x_vel = c_x_vel
@@ -51,15 +50,15 @@ begin
         assert n_y_vel = "110" AND n_x_vel = c_x_vel
             report "Did not bounce from ceiling, 2 to -2" severity error;
 
-        bp_y <= "00000";
+        b_y <= "00000";
         c_y_vel <= "101";
         wait for 1 ns;
         assert n_y_vel = "011" AND n_x_vel = c_x_vel
             report "Did not bounce from ceiling, -3 to 3" severity error;
 
         -- Testing ball bounce from paddle
-        bp_x <= "00011";
-        bp_y <= "01001";
+        b_x <= "00011";
+        b_y <= "01001";
         p1_pos <= "00000";
         wait for 1 ns;
         assert n_y_vel = c_y_vel AND n_x_vel = c_x_vel
@@ -70,8 +69,8 @@ begin
         assert n_y_vel = "110" AND n_x_vel = '1'
             report "Did not bounce correctly when paddle 1 was hit" severity error;
 
-        bp_x <= "11100";
-        bp_y <= "01001";
+        b_x <= "11100";
+        b_y <= "01001";
         p2_pos <= "00000";
         wait for 1 ns;
         assert n_y_vel = c_y_vel AND n_x_vel = c_x_vel

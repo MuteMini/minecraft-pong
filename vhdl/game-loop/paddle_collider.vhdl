@@ -1,0 +1,47 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+-- Assuming that the paddle has been collided with on the x-axis, what would our new velocity values be?
+entity paddle_collider is
+    port (
+        ball_y : in std_logic_vector(4 downto 0);
+        p_pos : in std_logic_vector(4 downto 0);
+        cur_y_vel : in std_logic_vector(2 downto 0);
+        new_y_vel : out std_logic_vector(2 downto 0);
+        cur_x_vel : in std_logic;
+        new_x_vel : out std_logic
+    );
+end paddle_collider;
+
+architecture paddle_collider_behav of paddle_collider is
+    -- Represents the ranges of the paddle that will be checked for equality
+    type std_logic_aoa is array (natural range <>) of std_logic_vector;
+
+    signal p_range: std_logic_aoa(0 to 5)(4 downto 0);
+begin       
+    -- Making 5 diffent 5 bit CCAs make this faster, but a cascading increment approach might be cheaper.
+    p_range(0) <= p_pos;
+    gen_cca:
+    for I in 1 to 5 generate
+        paddle_I : entity work.cancel_carry_adder generic map(adder_width => 5)
+            port map(a => p_pos, b => std_logic_vector(to_unsigned(I, 5)), output => p_range(I));
+    end generate gen_cca;
+
+    process (all)
+        variable touched : boolean := false;
+    begin
+        if    ball_y = p_range(0) then new_y_vel <= "101"; touched := true; -- -3 in twos complement
+        elsif ball_y = p_range(1) then new_y_vel <= "110"; touched := true; -- -2 in twos complement
+        elsif ball_y = p_range(2) then new_y_vel <= "111"; touched := true; -- -1 in twos complement
+        elsif ball_y = p_range(3) then new_y_vel <= "001"; touched := true; -- +1 in twos complement
+        elsif ball_y = p_range(4) then new_y_vel <= "010"; touched := true; -- +2 in twos complement
+        elsif ball_y = p_range(5) then new_y_vel <= "011"; touched := true; -- +3 in twos complement
+        else                       new_y_vel <= cur_y_vel; touched := false;
+        end if;
+
+        new_x_vel <= NOT cur_x_vel when touched else cur_x_vel;
+    end process;
+
+end paddle_collider_behav;
+
